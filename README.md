@@ -1,4 +1,4 @@
-# ClinIQLink-2025
+# ClinIQLink-2025 Challenge
 
 **ClinIQLink-2025** is a challenge designed to push the limits of large language models (LLMs) in the medical domain. The objective is to develop methods that significantly reduce hallucinations and improve the accuracy of medical question answering (QA). Participants must submit their solutions to be tested on a hidden test set, and the leaderboard will rank submissions based solely on their factual accuracy in retrieving medical knowledge.
 
@@ -59,19 +59,25 @@ The workflow diagram below outlines the entire process employed in the challenge
 ## Challenge Development Stages
 
 ### Step 1: Baseline Benchmark
-![ClinIQLinkStep1 drawio](https://github.com/user-attachments/assets/63b695a4-39bd-4c56-ac5c-346904ec1a5c)
-
 - **Objective:** Establish a performance baseline using a raw medical LLM without any enhancements.
 - **Process:**  
   - Use a baseline model OpenBioLLM to answer medical QA pairs.
   - Evaluate using standard metrics (precision, recall, F1 score) to measure factual accuracy.
+- **Potential Challenges:**
+  - Low Baseline Performance: The raw model may struggle with consistency and accurate fact retrieval.
+  - Hallucinations: High incidence of unsupported claims due to lack of external evidence.
+  - Evaluation Metrics: We might struggle caputring unformatted answers model.
 - **Outcome:**  
   - A baseline performance score against which improvements can be compared.
+- **References:**
+  - [ClinIQLink 2025 - LLM Lie Detector Test](https://brandonio-c.github.io/ClinIQLink-2025/)    
+  - [HuggingFace - The Open Medical-LLM Leaderboard: Benchmarking Large Language Models in Healthcare](https://huggingface.co/blog/leaderboard-medicalllm)
+  - [Do Large Language Models have Shared Weaknesses in Medical Question Answering?](https://arxiv.org/abs/2310.07225) (Andrew M. Bean et al., Findings 2024)
+    
+![ClinIQLinkStep1 drawio](https://github.com/user-attachments/assets/63b695a4-39bd-4c56-ac5c-346904ec1a5c)
 
 ---
 ### Step 2: Retrieval-Augmented Generation with MedRAG
-![ClinIQLink drawio](https://github.com/user-attachments/assets/5f26d9ce-7768-4e56-a901-671e8f4bbd9e)# ClinIQLink-2025 Challenge
-
 - **Objective:** Enhance model performance by integrating custom retrieval to support factual accuracy.
 - **Integration:**  
   - Use a custom version of [MedRAG](https://github.com/Teddy-XiongGZ/MedRAG) to incorporate a retrieval module.
@@ -79,13 +85,22 @@ The workflow diagram below outlines the entire process employed in the challenge
 - **Process:**  
   - Enrich the prompt with retrieved context before generating an answer.
   - Evaluate the improved answers on factual correctness.
-- **Outcome:**  
--  
+- **Potential Challenges:**
+  - Retrieval Noise: Irrelevant or low-quality documents might be retrieved, leading to misinformation.
+  - Latency and Scalability: Building and querying indices (e.g., BM25, dense retrievers) can be time-consuming.
+  - Context window: The context window might be too big to be processed and a need of classification of the most accurate/useful document need to be mad
+- **Outcome:**
+     
+- **References**
+  - [Benchmarking Retrieval-Augmented Generation for Medicine](https://aclanthology.org/2024.findings-acl.372/) (Xiong et al., Findings 2024)
+  - [R^2AG: Incorporating Retrieval Information into Retrieval Augmented Generation](https://arxiv.org/abs/2406.13249) (Fuda Ye et al., Findings 2024)
+  - [A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models](https://arxiv.org/abs/2401.01313) (S. M Towhidul Islam Tonmoy et al., Findings 2024) 
+
+![ClinIQLink drawio](https://github.com/user-attachments/assets/5f26d9ce-7768-4e56-a901-671e8f4bbd9e)
 
 ---
 
 ### Step 3: Prompt Refinement using TextGrad
-![ClinIQLinkStep3 drawio](https://github.com/user-attachments/assets/926ef605-698f-47ae-a035-f29a8ea0fc95)
 - **Objective:** Further optimize the response by refining prompts and outputs.
 - **Integration:**  
   - Use [TextGrad](https://github.com/zou-group/textgrad) to iteratively refine and optimize the LLM’s outputs.
@@ -93,9 +108,16 @@ The workflow diagram below outlines the entire process employed in the challenge
 - **Process:**  
   - Define a loss function that captures the accuracy and semantic similarity requirements.
   - Iteratively update the prompt and answer based on model feedback with the usage a more smarter model like DeepSeek R1.
+-  **Potential Challenges:**
+  -  Optimization Instability: Text-based gradients might converge to local minima or produce inconsistent refinements.
+  -  Alignment of Loss Functions: Ensuring the textual loss correlates with true factual accuracy is non-trivial.
+  -  Golden prompt: Finding a single golden prompt for each type of question might not be possible.
 - **Outcome:**  
--
+- **References:**
+  - [TextGrad: Automatic "Differentiation" via Text](https://arxiv.org/pdf/2406.07496) (Mert Yuksekgonul et al., Findings 2024)
+  - [A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models](https://arxiv.org/abs/2401.01313) (S. M Towhidul Islam Tonmoy et al., Findings 2024) 
 
+![ClinIQLinkStep3 drawio](https://github.com/user-attachments/assets/926ef605-698f-47ae-a035-f29a8ea0fc95)
 ---
 
 ## Submission and Evaluation
