@@ -66,7 +66,7 @@ The workflow diagram below outlines the entire process employed in the challenge
 - **Potential Challenges:**
   - Low Baseline Performance: The raw model may struggle with consistency and accurate fact retrieval.
   - Hallucinations: High incidence of unsupported claims due to lack of external evidence.
-  - Evaluation Metrics: We might struggle caputring unformatted answers model.
+  - Evaluation Metrics: We may face challenges in accurately capturing model outputs when they are presented in an unstructured format.
 - **Outcome:**  
   - A baseline performance score against which improvements can be compared.
 - **References:**
