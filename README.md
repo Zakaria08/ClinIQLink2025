@@ -1,5 +1,3 @@
-# ClinIQLink-2025 Challenge
-
 **ClinIQLink-2025** is a challenge designed to push the limits of large language models (LLMs) in the medical domain. The objective is to develop methods that significantly reduce hallucinations and improve the accuracy of medical question answering (QA). Participants must submit their solutions to be tested on a hidden test set, and the leaderboard will rank submissions based solely on their factual accuracy in retrieving medical knowledge.
 
 ---
@@ -8,7 +6,7 @@
 
 1. [Overview](#overview)  
 2. [Project Requirements](#project-requirements)  
-3. [Architecture and Workflow](#architecture-and-workflow)  
+3. [Architecture and Workflow](#final-architecture-and-workflow)  
 4. [Challenge Development Stages](#challenge-development-stages)  
     - [Step 1: Baseline Benchmark](#step-1-baseline-benchmark)  
     - [Step 2: Retrieval-Augmented Generation with MedRAG](#step-2-retrieval-augmented-generation-with-medrag)  
@@ -48,7 +46,7 @@ For more details, please visit the [ClinIQLink-2025 website](https://brandonio-c
 
 ---
 
-## Architecture and Workflow
+## Final Architecture and Workflow
 
 The workflow diagram below outlines the entire process employed in the challenge:
 
@@ -59,6 +57,7 @@ The workflow diagram below outlines the entire process employed in the challenge
 ## Challenge Development Stages
 
 ### Step 1: Baseline Benchmark
+![ClinIQLinkStep1 drawio](https://github.com/user-attachments/assets/63b695a4-39bd-4c56-ac5c-346904ec1a5c)
 
 - **Objective:** Establish a performance baseline using a raw medical LLM without any enhancements.
 - **Process:**  
@@ -68,8 +67,8 @@ The workflow diagram below outlines the entire process employed in the challenge
   - A baseline performance score against which improvements can be compared.
 
 ---
-
 ### Step 2: Retrieval-Augmented Generation with MedRAG
+![ClinIQLink drawio](https://github.com/user-attachments/assets/5f26d9ce-7768-4e56-a901-671e8f4bbd9e)# ClinIQLink-2025 Challenge
 
 - **Objective:** Enhance model performance by integrating custom retrieval to support factual accuracy.
 - **Integration:**  
@@ -84,7 +83,7 @@ The workflow diagram below outlines the entire process employed in the challenge
 ---
 
 ### Step 3: Prompt Refinement using TextGrad
-
+![ClinIQLinkStep3 drawio](https://github.com/user-attachments/assets/926ef605-698f-47ae-a035-f29a8ea0fc95)
 - **Objective:** Further optimize the response by refining prompts and outputs.
 - **Integration:**  
   - Use [TextGrad](https://github.com/zou-group/textgrad) to iteratively refine and optimize the LLM’s outputs.
