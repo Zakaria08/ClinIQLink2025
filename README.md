@@ -109,9 +109,9 @@ The workflow diagram below outlines the entire process employed in the challenge
   - Define a loss function that captures the accuracy and semantic similarity requirements.
   - Iteratively update the prompt and answer based on model feedback with the usage a more smarter model like DeepSeek R1.
 -  **Potential Challenges:**
-  -  Optimization Instability: Text-based gradients might converge to local minima or produce inconsistent refinements.
-  -  Alignment of Loss Functions: Ensuring the textual loss correlates with true factual accuracy is non-trivial.
-  -  Golden prompt: Finding a single golden prompt for each type of question might not be possible.
+      - Optimization Instability: Text-based gradients might converge to local minima or produce inconsistent refinements.
+      - Alignment of Loss Functions: Ensuring the textual loss correlates with true factual accuracy is non-trivial.
+      - Golden prompt: Finding a single golden prompt for each type of question might not be possible.
 - **Outcome:**  
 - **References:**
   - [TextGrad: Automatic "Differentiation" via Text](https://arxiv.org/pdf/2406.07496) (Mert Yuksekgonul et al., Findings 2024)
