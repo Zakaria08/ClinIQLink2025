@@ -69,6 +69,21 @@ The workflow diagram below outlines the entire process employed in the challenge
   - Evaluation Metrics: We may face challenges in accurately capturing model outputs when they are presented in an unstructured format.
 - **Outcome:**  
   - A baseline performance score against which improvements can be compared.
+  - True/False:
+      - Accuracy: 0.6
+      - Precision: 1
+      - Recall: 0.6
+      - F1 Score: 0.75
+  - Multiple Choice:
+      - Accuracy: 0.5
+      - Precision: 0.5
+      - Recall: 1
+      - F1 Score: 0.67
+  - Multiple Choice:
+      - Accuracy: 0.69
+      - Precision: 0.92
+      - Recall: 0.73
+      - F1 Score: 0.81    
 - **References:**
   - [ClinIQLink 2025 - LLM Lie Detector Test](https://brandonio-c.github.io/ClinIQLink-2025/)    
   - [HuggingFace - The Open Medical-LLM Leaderboard: Benchmarking Large Language Models in Healthcare](https://huggingface.co/blog/leaderboard-medicalllm)
