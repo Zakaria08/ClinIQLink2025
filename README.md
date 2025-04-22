@@ -110,7 +110,7 @@ The workflow diagram below outlines the entire process employed in the challenge
   - [R^2AG: Incorporating Retrieval Information into Retrieval Augmented Generation](https://arxiv.org/abs/2406.13249) (Fuda Ye et al., Findings 2024)
   - [A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models](https://arxiv.org/abs/2401.01313) (S. M Towhidul Islam Tonmoy et al., Findings 2024) 
 
-![ClinIQLink drawio](https://github.com/user-attachments/assets/5f26d9ce-7768-4e56-a901-671e8f4bbd9e)
+![ClinIQLink drawio](https://github.com/user-attachments/assets/fbc25f70-8353-42d6-812d-4788034f9650)
 
 ---
 
@@ -131,7 +131,8 @@ The workflow diagram below outlines the entire process employed in the challenge
   - [TextGrad: Automatic "Differentiation" via Text](https://arxiv.org/pdf/2406.07496) (Mert Yuksekgonul et al., Findings 2024)
   - [A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models](https://arxiv.org/abs/2401.01313) (S. M Towhidul Islam Tonmoy et al., Findings 2024) 
 
-![ClinIQLinkStep3 drawio](https://github.com/user-attachments/assets/926ef605-698f-47ae-a035-f29a8ea0fc95)
+![ClinIQLinkStep3 drawio](https://github.com/user-attachments/assets/8da3a491-05d6-45b2-be49-04868d7ee557)
+
 ---
 
 ## Submission and Evaluation
