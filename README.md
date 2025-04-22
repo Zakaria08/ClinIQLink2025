@@ -89,8 +89,7 @@ The workflow diagram below outlines the entire process employed in the challenge
   - [HuggingFace - The Open Medical-LLM Leaderboard: Benchmarking Large Language Models in Healthcare](https://huggingface.co/blog/leaderboard-medicalllm)
   - [Do Large Language Models have Shared Weaknesses in Medical Question Answering?](https://arxiv.org/abs/2310.07225) (Andrew M. Bean et al., Findings 2024)
     
-![ClinIQLinkStep1 drawio](https://github.com/user-attachments/assets/63b695a4-39bd-4c56-ac5c-346904ec1a5c)
-
+![ClinIQLinkBaseline1 drawio](https://github.com/user-attachments/assets/98d9bfe8-8bdb-4947-ad37-498256186cd5)
 ---
 ### Step 2: Retrieval-Augmented Generation with MedRAG
 - **Objective:** Enhance model performance by integrating custom retrieval to support factual accuracy.
