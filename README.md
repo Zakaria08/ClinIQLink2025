@@ -79,7 +79,7 @@ The workflow diagram below outlines the entire process employed in the challenge
       - Precision: 0.5
       - Recall: 1
       - F1 Score: 0.67
-  - Multiple Choice:
+  - List:
       - Accuracy: 0.69
       - Precision: 0.92
       - Recall: 0.73
