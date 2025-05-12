@@ -138,10 +138,10 @@ The workflow diagram below outlines the entire process employed in the challenge
       - Recall: 1
       - F1 Score: 0.824
  - List:
-    - Accuracy: 0
-    - Precision: 0
-    - Recall: 0
-    - F1 Score: 0
+    - Accuracy: 0.84
+    - Precision: 0.96
+    - Recall: 0.77
+    - F1 Score: 0.85
 - **References:**
   - [TextGrad: Automatic "Differentiation" via Text](https://arxiv.org/pdf/2406.07496) (Mert Yuksekgonul et al., Findings 2024)
   - [A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models](https://arxiv.org/abs/2401.01313) (S. M Towhidul Islam Tonmoy et al., Findings 2024) 
