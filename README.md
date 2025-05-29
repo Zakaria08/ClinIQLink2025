@@ -152,6 +152,74 @@ The workflow diagram below outlines the entire process employed in the challenge
 - **Outcome:**
 
   
+
+
+- **Understanding of Log Data**
+  - Every question has its own question folder. Going into the question folder you can see the answers the LLMs gave us
+
+    **failed_attempt_question_XY.txt**
+    - Initial Prompt: Question from the Testset
+    - Full Prompt: Prompt that was given the LLM to answer the model. Is the same as initial prompt in the first iteration otherwise refined prompt
+    - Answer: Given Answer from the LLM
+    - Feedback: Feedback from the evaluation function. What can be improved in this prompt?
+    - Improved full prompt: Refined prompt to give to the LLM
+
+    **Parsed_answer.json**
+    Answer that is being used for the final evaluation of the model
+
+    **question.json**
+    Initial question with its options and ground Truth
+
+    **snippets_Number.json**
+    Parts of the RAG that had been retrieved to answer the question.
+    Number indicates in which iteration the Documents were retrieved. Since TextGrad Loop has several Iterations
+
+- **Possible Future Outlook**
+  - Optimize System Prompt with training Set
+  - Optimize Prompt for RAG System instead of LLM to get better retrieval
+
+## Setup Instructions
+- OpenAI Key is needed to run the Model with TextGrad.
+
+## Clone Repository 
+```bash
+git clone https://github.com/Zakaria08/ClinIQLink2025.git
+cd ClinIQLink2025
+```
+---
+### Create Environment
+```bash
+python -m venv venv
+source venv/bin/activate  # Unix or MacOS
+venv\Scripts\activate     # Windows
+```
+### Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+---
+## Running the Project
+  ```
+  python src/test_rag_textgrad.py --limit 150
+  ```
+---
+## Reproducibility
+**TextGrad** 
+- Make sure the Benchmark_validation_testset.json is in the ClinIQLink2025 Folder
+- Make Sure gpt-3.5-turbo-16k is being used as answer engine (default)
+- Make Sure gpt-4o is used as feedback engine (default)
+
+## Team Contributions
+
+| Name              | Contributions                                  |
+|-------------------|------------------------------------------------|
+| Kevin Pfister     | TextGrad implementation, searching and preparing Testset.  |
+| Team Member 2     | Model training, hyperparameter tuning.         |
+| Team Member 3     | Evaluation, visualization, documentation.      |
+| Team Member 4     | Project management, writing IMRAD paper.       |
+
+## Results & Evaluation
+**TextGrad Results**
 **Baseline**
 - True/False:
   - Accuracy: 0.64  
@@ -208,33 +276,6 @@ The workflow diagram below outlines the entire process employed in the challenge
 
 
 ![Textgrad_with_rag](https://github.com/user-attachments/assets/c180ea47-76cb-493d-89de-5f932a10c53c)
-
-- **Understanding of Log Data**
-  - Every question has its own question folder. Going into the question folder you can see the answers the LLMs gave us
-
-    **failed_attempt_question_XY.txt**
-    - Initial Prompt: Question from the Testset
-    - Full Prompt: Prompt that was given the LLM to answer the model. Is the same as initial prompt in the first iteration otherwise refined prompt
-    - Answer: Given Answer from the LLM
-    - Feedback: Feedback from the evaluation function. What can be improved in this prompt?
-    - Improved full prompt: Refined prompt to give to the LLM
-
-    **Parsed_answer.json**
-    Answer that is being used for the final evaluation of the model
-
-    **question.json**
-    Initial question with its options and ground Truth
-
-    **snippets_Number.json**
-    Parts of the RAG that had been retrieved to answer the question.
-    Number indicates in which iteration the Documents were retrieved. Since TextGrad Loop has several Iterations
-
-- **Possible Future Outlook**
-  - Optimize System Prompt with training Set
-  - Optimize Prompt for RAG System instead of LLM to get better retrieval
-    
-    
-
 - **References:**
   - [TextGrad: Automatic "Differentiation" via Text](https://arxiv.org/pdf/2406.07496) (Mert Yuksekgonul et al., Findings 2024)
   - [ClinIQLink-2025 website](https://brandonio-c.github.io/ClinIQLink-2025/).
