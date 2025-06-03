@@ -243,55 +243,6 @@ class RAGFactory:
         return cls.create_rag_system(**config)
     
     @classmethod
-    def get_recommended_configs(cls) -> Dict[str, Dict[str, Any]]:
-        """
-        Get recommended RAG system configurations.
-        
-        Returns:
-            Dictionary of recommended configurations
-        """
-        return {
-            "medical_research": {
-                "description": "Best for medical research questions",
-                "llm_provider": "TBD",
-                "model_name": "TBD",
-                "retriever_name": "TBD",
-                "corpus_name": "TBD",
-                "use_rag": True
-            },
-            "TBD1": {
-                "description": "TBD",
-                "llm_provider": "TBD",
-                "model_name": "TBD",
-                "retriever_name": "TBD",
-                "corpus_name": "TBD",
-                "use_rag": True
-            },
-            "TBD2": {
-                "description": "TBD",
-                "llm_provider": "local",
-                "model_name": "TBD",
-                "retriever_name": "TBD",
-                "corpus_name": "TBD",
-                "use_rag": True
-            },
-            "TBD3": {
-                "description": "TBD",
-                "llm_provider": "TBD",
-                "model_name": "TBD",
-                "retriever_name": "TBD",
-                "corpus_name": "TBD",
-                "use_rag": True
-            },
-            "TBD4": {
-                "description": "TBD",
-                "llm_provider": "TBD",
-                "model_name": "TBD",
-                "use_rag": False
-            }
-        }
-    
-    @classmethod
     def validate_config(cls, config: Dict[str, Any]) -> bool:
         """
         Validate RAG system configuration.

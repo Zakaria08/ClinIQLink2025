@@ -206,36 +206,6 @@ class SystemFactory:
         if corpus_name not in CORPUS_NAMES:
             available = list(CORPUS_NAMES.keys())
             raise ValueError(f"Invalid corpus_name '{corpus_name}'. Available: {available}")
-    
-    @staticmethod
-    def get_system_configurations() -> Dict[str, Any]:
-        """
-        Get all available system configurations.
-        
-        Returns:
-            Dictionary with available configurations
-        """
-        return {
-            "retrievers": RETRIEVER_NAMES,
-            "corpora": CORPUS_NAMES,
-            "recommended_combinations": {
-                "medical_research": {
-                    "retriever": "TBD",
-                    "corpus": "TBD",
-                    "description": "Best for medical research queries"
-                },
-                "TBD": {
-                    "retriever": "TBD",
-                    "corpus": "TBD", 
-                    "description": "TBD"
-                },
-                "TBD2": {
-                    "retriever": "TBD",
-                    "corpus": "TBD",
-                    "description": "TBD"
-                }
-            }
-        }
 
 
 class ComponentFactory:

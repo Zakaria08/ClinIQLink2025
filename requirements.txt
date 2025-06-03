@@ -1,19 +1,20 @@
-faiss-cpu
-python-liquid
-langchain
-tqdm
+# Core ML/AI libraries
+torch
+numpy
 transformers
-sentence_transformers
-pyserini
-tiktoken
-datasets
-accelerate
-textgrad
-llama-cpp-python
 huggingface-hub
-python-dotenv
-litellm
-textgrad
-dotenv
-google-generativeai
+
+# Retrieval and search
+pyserini
+
+# LLM API clients  
 openai
+google-generativeai
+
+# Local LLM support
+llama-cpp-python
+
+# Utilities
+tqdm
+python-dotenv
+python-liquid

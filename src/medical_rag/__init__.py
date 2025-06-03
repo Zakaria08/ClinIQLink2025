@@ -131,16 +131,6 @@ def list_available_llm_providers() -> list:
     return LLMFactory.get_available_providers()
 
 
-def get_recommended_configurations() -> dict:
-    """
-    Get recommended RAG system configurations for different use cases.
-    
-    Returns:
-        Dictionary of recommended configurations
-    """
-    return RAGFactory.get_recommended_configs()
-
-
 def validate_environment() -> dict:
     """
     Check environment for required dependencies and API keys.
