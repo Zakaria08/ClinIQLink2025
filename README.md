@@ -1,27 +1,33 @@
 # ClinIQLink-2025 Challenge
 
-**ClinIQLink-2025** is a challenge designed to push the limits of large language models (LLMs) in the medical domain. The objective is to develop methods that significantly reduce hallucinations and improve the accuracy of medical question answering (QA). Participants must submit their solutions to be tested on a hidden test set, and the leaderboard will rank submissions based solely on their factual accuracy in retrieving medical knowledge.
-
----
+A comprehensive, modular system for medical information retrieval and question answering that combines advanced retrieval methods with multiple LLM providers in a clean, extensible architecture.
 
 ## Table of Contents
 
-1. [Overview](#overview)  
-2. [Project Requirements](#project-requirements)  
-3. [Architecture and Workflow](#final-architecture-and-workflow)  
-4. [Challenge Development Stages](#challenge-development-stages)  
-    - [Step 1: Baseline Benchmark](#step-1-baseline-benchmark)  
-    - [Step 2: Retrieval-Augmented Generation with MedRAG](#step-2-retrieval-augmented-generation-with-medrag)  
-    - [Step 3: Prompt Refinement using TextGrad](#step-3-prompt-refinement-using-textgrad)  
-5. [Submission and Evaluation](#submission-and-evaluation)  
-6. [Installation and Setup](#installation-and-setup)  
-7. [Usage](#usage)  
-8. [Future Directions](#future-directions)  
+1. [Project Description](#project-description)
+2. [Features](#features)
+3. [Project Structure](#project-structure)
+4. [Setup Instructions](#setup-instructions)
+5. [Quick Start](#quick-start)
+6. [Benchmarking & Evaluation](#benchmarking--evaluation)
+7. [Results & Performance](#results--performance)
+8. [Contributing Log](#contribution-log)
+9. [References](#references)
 
 ---
 
-## Overview
+## Project Description
 
+This project implements a medical question answering system that combines **Retrieval-Augmented Generation (RAG)** with multiple retrieval algorithms and LLM providers. The system is designed to answer complex medical questions by retrieving relevant information from large medical corpora and generating accurate, contextual responses.
+
+### Key Objectives
+- **Multi-Algorithm Retrieval**: Support BM25, SPLADE, UniCOIL, and MedCPT retrieval methods
+- **Multi-Provider LLMs**: Integration with OpenAI GPT, Google Gemini/Gemma, and local models
+- **Medical Focus**: Optimized for medical literature and clinical question answering
+- **Modular Design**: Clean, extensible architecture for research and production use
+- **Comprehensive Evaluation**: Robust benchmarking framework for performance analysis
+
+### About the challenge
 **ClinIQLink-2025** is a challenge that evaluates how well LLMs can retrieve and generate factually accurate medical information. The challenge focuses on two main tasks:
 
 - **Reducing Hallucinations:** Identify and mitigate hallucinations in the model’s responses, ensuring that the generated answers are grounded in accurate, evidence-based medical knowledge.
@@ -33,284 +39,327 @@ For more details, please visit the [ClinIQLink-2025 website](https://brandonio-c
 
 ---
 
-## Project Requirements
+## Features
 
-- **Programming Language:** Python 3.11  
-- **Deep Learning Framework:** PyTorch  
-- **LLM Libraries:** 
-  - Open-source biomedical LLMs 
-  - Transformers library
-- **Retrieval Toolkit:** [MedRAG](https://github.com/Teddy-XiongGZ/MedRAG) – for implementing Retrieval-Augmented Generation (RAG) in medical QA  
-- **Optimization Toolkit:** [TextGrad](https://github.com/zou-group/textgrad) – for iterative prompt and output refinement using backpropagated textual feedback  
-- **Additional Tools:**  
-  - Git-LFS (for downloading large corpora)  
-  - Java (for BM25 support)  
+### 🔍 **Retrieval System** (`medical_retrieval`)
+- **Multiple Algorithms**: BM25, SPLADE, UniCOIL, MedCPT
+- **Hybrid Methods**: Combine retrievers with Reciprocal Rank Fusion (RRF)
+- **Medical Corpora**: PubMed, StatPearls, Medical Textbooks, Wikipedia
+- **Scalable Indexing**: Memory-efficient batch processing for large datasets
+- **Type Safety**: Full type hints and validation
 
----
+### 🤖 **RAG System** (`medical_rag`)
+- **Multiple LLM Providers**: OpenAI, Google Gemini/Gemma, Local models (llama-cpp)
+- **Custom Prompts**: Support for TextGrad and prompt optimization with the method called "rag_answer_textgrad"
+- **JSON Processing**: Automatic structured response extraction
+- **Error Handling**: Robust error recovery and fallback mechanisms
 
-## Final Architecture and Workflow
-
-The workflow diagram below outlines the entire process employed in the challenge:
-
-
-
----
-
-## Challenge Development Stages
-
-### Step 1: Baseline Benchmark
-- **Objective:** Establish a performance baseline using a raw medical LLM without any enhancements.
-- **Process:**  
-  - Use a baseline model OpenBioLLM to answer medical QA pairs.
-  - Evaluate using standard metrics (precision, recall, F1 score) to measure factual accuracy.
-- **Potential Challenges:**
-  - Low Baseline Performance: The raw model may struggle with consistency and accurate fact retrieval.
-  - Hallucinations: High incidence of unsupported claims due to lack of external evidence.
-  - Evaluation Metrics: We may face challenges in accurately capturing model outputs when they are presented in an unstructured format.
-- **Outcome:**  
-  - A baseline performance score against which improvements can be compared.
-  - True/False:
-      - Accuracy: 0.6
-      - Precision: 1
-      - Recall: 0.6
-      - F1 Score: 0.75
-  - Multiple Choice:
-      - Accuracy: 0.5
-      - Precision: 0.5
-      - Recall: 1
-      - F1 Score: 0.67
-  - List:
-      - Accuracy: 0.69
-      - Precision: 0.92
-      - Recall: 0.73
-      - F1 Score: 0.81    
-- **References:**
-  - [ClinIQLink 2025 - LLM Lie Detector Test](https://brandonio-c.github.io/ClinIQLink-2025/)    
-  - [HuggingFace - The Open Medical-LLM Leaderboard: Benchmarking Large Language Models in Healthcare](https://huggingface.co/blog/leaderboard-medicalllm)
-  - [Do Large Language Models have Shared Weaknesses in Medical Question Answering?](https://arxiv.org/abs/2310.07225) (Andrew M. Bean et al., Findings 2024)
-    
-![ClinIQLinkBaseline1 drawio](https://github.com/user-attachments/assets/98d9bfe8-8bdb-4947-ad37-498256186cd5)
----
-### Step 2: Retrieval-Augmented Generation with MedRAG
-- **Objective:** Enhance model performance by integrating custom retrieval to support factual accuracy.
-- **Integration:**  
-  - Use a custom version of [MedRAG](https://github.com/Teddy-XiongGZ/MedRAG) to incorporate a retrieval module.
-  - Retrieve relevant medical documents from sources such as PubMed, StatPearls, Textbooks, and Wikipedia.
-- **Process:**  
-  - Enrich the prompt with retrieved context before generating an answer.
-  - Evaluate the improved answers on factual correctness.
-- **Potential Challenges:**
-  - Retrieval Noise: Irrelevant or low-quality documents might be retrieved, leading to misinformation.
-  - Latency and Scalability: Building and querying indices (e.g., BM25, dense retrievers) can be time-consuming.
-  - Context window: The context window might be too big to be processed and a need of classification of the most accurate/useful document need to be mad
-- **Outcome:**
-     
-- **References**
-  - [Benchmarking Retrieval-Augmented Generation for Medicine](https://aclanthology.org/2024.findings-acl.372/) (Xiong et al., Findings 2024)
-  - [R^2AG: Incorporating Retrieval Information into Retrieval Augmented Generation](https://arxiv.org/abs/2406.13249) (Fuda Ye et al., Findings 2024)
-  - [A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models](https://arxiv.org/abs/2401.01313) (S. M Towhidul Islam Tonmoy et al., Findings 2024) 
-
-![ClinIQLink drawio](https://github.com/user-attachments/assets/fbc25f70-8353-42d6-812d-4788034f9650)
+### 📊 **Evaluation Framework**
+- **Comprehensive Metrics**: Accuracy, Precision, Recall, F1-score
+- **Question Types**: Multiple choice, True/False, List selection
+- **Benchmarking**: Automated evaluation on medical Q&A datasets
+- **Reproducible**: Deterministic results with configurable parameters
 
 ---
 
-### Step 3: Prompt Refinement using TextGrad
-- **Objective:** Further optimize the response by refining prompts and outputs.
-- **Overall Architecture**
-  ![RAG_TEXTGRAD drawio](https://github.com/user-attachments/assets/c4244776-f708-4b67-a4fa-bb96ee15a1da)
+## Project Structure
 
-- **Architecture TextGrad**
- ![fertiges_diagramm drawio](https://github.com/user-attachments/assets/0313d5f8-f45c-4ffc-9b3f-08f69afefcfb)
+```
+ClinIQLink2025/
+├── src/                           # 📦 Source Code Packages
+│   ├── medical_retrieval/         # 📚 Document Retrieval Package
+│   │   ├── __init__.py           #   Package interface
+│   │   ├── config.py             #   Configuration settings
+│   │   ├── base_retriever.py     #   Abstract base class
+│   │   ├── bm25_retriever.py     #   BM25 implementation
+│   │   ├── splade_retriever.py   #   SPLADE implementation
+│   │   ├── unicoil_retriever.py  #   UniCOIL implementation
+│   │   ├── medcpt_retriever.py   #   MedCPT implementation
+│   │   ├── retrieval_system.py   #   Main orchestration
+│   │   ├── doc_extracter.py      #   Document caching
+│   │   ├── factory.py            #   Factory patterns
+│   │   └── utils.py              #   Utility functions
+│   │
+│   ├── medical_rag/              # 🤖 RAG System Package
+│   │   ├── __init__.py           #   Package interface
+│   │   ├── rag_config.py         #   RAG configuration
+│   │   ├── base_llm.py           #   LLM base class
+│   │   ├── openai_llm.py         #   OpenAI implementation
+│   │   ├── gemini_llm.py         #   Google Gemini/Gemma
+│   │   ├── local_llm.py          #   Local model support
+│   │   ├── llm_factory.py        #   LLM factory
+│   │   ├── rag_system.py         #   Main RAG orchestration
+│   │   ├── rag_factory.py        #   RAG factory patterns
+│   │   └── rag_utils.py          #   Utility functions
+│   │
+│   ├── data/                     # 🗃️ Data Processing Scripts
+│   │   ├── pubmed.py             #   PubMed data processing
+│   │   ├── statpearls.py         #   StatPearls processing
+│   │   ├── textbooks.py          #   Textbook processing
+│   │   └── wikipedia.py          #   Wikipedia processing
+│   │
+│   ├── baseline.py               # 📊 Baseline model implementation
+│   ├── Main.py                   # 🚀 Main execution script
+│   └── template.py               # 📝 Prompt templates
+│
+├── corpus/                        # 📚 Medical Corpora Storage
+│   ├── pubmed/                   #   PubMed abstracts
+│   ├── selfcorpus/               #   Custom corpus
+│   │   ├── chunk/                #   Chunked documents
+│   │   └── index/                #   Search indices
+│   ├── statpearls/               #   StatPearls reference
+│   ├── textbooks/                #   Medical textbooks
+│   └── wikipedia/                #   Medical Wikipedia
+│
+├── logs/                         # 📈 Experiment Results
+│   └── saved_logs/               #   Benchmark results by method
+│       ├── BM25/                 #   BM25 results
+│       ├── MedCPT/               #   MedCPT results
+│       ├── SPLADE/               #   SPLADE results
+│       ├── UniCOIL/              #   UniCOIL results
+│       ├── MedicalHybrid/        #   Hybrid method results
+│       ├── OptimalHybrid/        #   Optimal combination
+│       └── *.json                #   Individual benchmark files
+│
+├── .env                          # 🔐 Environment variables
+├── .env.example                  # 🔐 Environment template
+├── .gitignore                    # 🚫 Git ignore rules
+├── requirements.txt              # 📦 Python dependencies
+├── test_rag.py                   # 🎯 Main evaluation script
+├── Benchmark_validation_testset.json      # 📋 30-question benchmark
+├── Benchmark_validation_enhanced_testset.json # 📋 150-question benchmark
+└── README.md                     # 📋 This documentation
+```
 
-  **Process Description TextGrad Loop**
-- 1. Giving Question to RAG. Passing Context to the answering LLM. Getting a first answer from LLM (test_rag_textgrad.py) ![grafik](https://github.com/user-attachments/assets/cdfe07c1-3f08-40d1-bdc3-1e47a00e4538)
-
-  3. Passing the first Answer into the TEXTGRAD.py file entering the TextGrad loop![grafik](https://github.com/user-attachments/assets/612fc64f-f4de-45e6-afa5-aa4773e4c909)
-
-  4. Checking the Answer in the classification Function ![grafik](https://github.com/user-attachments/assets/0df3b6ab-5cbf-4ffc-9f4d-3f11c7ecb27a)
-  5. If the Answer is good return answer, else go into prompt refinement loop ![grafik](https://github.com/user-attachments/assets/653b7cab-985f-499e-b273-3926bcc0efdb)
-  6. If answer is bad get Feedback (Loss function) for our answer ![grafik](https://github.com/user-attachments/assets/9fd50040-33d8-46f1-a441-bdffbf6200f1)![grafik](https://github.com/user-attachments/assets/482a6907-f02e-4b9d-b7bf-abaa0949e46c)
-  7. Optimizing Prompt based on Feedback (only Question(head) being changed)![grafik](https://github.com/user-attachments/assets/9efcd9c7-ceb4-4e08-8d40-dcee896df78f)
-     ![grafik](https://github.com/user-attachments/assets/d42f1094-2f7c-4462-81d0-11fbdb41fe3e)
-  9. After prompt refinement rebuilding prompt and giving it to RAG or LLM
-![grafik](https://github.com/user-attachments/assets/a1ffc3e9-59da-49db-9a15-d54e49618930)
-![grafik](https://github.com/user-attachments/assets/998e3707-a650-4499-ae61-4352684abf52)
-  10. If no answer can be found in all iterations return last answer.
-      ![grafik](https://github.com/user-attachments/assets/ddd9fd37-f57d-4c2a-966d-4bfe8427041a)
-
-
-- **Integration:**  
-  - Use Chatgpt 4 to refine the prompt
-  - Use Chatgpt 3.5 to answer questions
-  - Use TextGrad Library to improve Prompts
-  
-
--  **Challenges:**
-      - Library works only with predefined LLM's which have an API
-      - Uses many Ressources because it takes several requests to improve the prompt and to answer the question
-      - Prompts were refined for LLM's and not RAG systems.
-- **Outcome:**
-
-  
-
-
-- **Understanding of Log Data**
-  - Every question has its own question folder. Going into the question folder you can see the answers the LLMs gave us
-
-    **failed_attempt_question_XY.txt**
-    - Initial Prompt: Question from the Testset
-    - Full Prompt: Prompt that was given the LLM to answer the model. Is the same as initial prompt in the first iteration otherwise refined prompt
-    - Answer: Given Answer from the LLM
-    - Feedback: Feedback from the evaluation function. What can be improved in this prompt?
-    - Improved full prompt: Refined prompt to give to the LLM
-
-    **Parsed_answer.json**
-    Answer that is being used for the final evaluation of the model
-
-    **question.json**
-    Initial question with its options and ground Truth
-
-    **snippets_Number.json**
-    Parts of the RAG that had been retrieved to answer the question.
-    Number indicates in which iteration the Documents were retrieved. Since TextGrad Loop has several Iterations
-
-- **Possible Future Outlook**
-  - Optimize System Prompt with training Set
-  - Optimize Prompt for RAG System instead of LLM to get better retrieval
+---
 
 ## Setup Instructions
-- OpenAI Key is needed to run the Model with TextGrad.
 
-## Clone Repository 
+> [!IMPORTANT]  
+> This system requires Python 3.11 and has optional dependencies for different LLM providers and retrieval methods.
+
+### 1. Clone Repository
 ```bash
 git clone https://github.com/Zakaria08/ClinIQLink2025.git
 cd ClinIQLink2025
 ```
----
-### Create Environment
+
+### 2. Create Virtual Environment
 ```bash
 python -m venv venv
-source venv/bin/activate  # Unix or MacOS
+source venv/bin/activate  # Unix/MacOS
+# or
 venv\Scripts\activate     # Windows
 ```
-### Install Dependencies
+
+### 3. Install Dependencies
 ```bash
-pip install -r requirements.txt
+pip install -r requirement.txt
 ```
----
-## Running the Project
-  ```
-  python src/test_rag_textgrad.py --limit 150
-  ```
----
-## Reproducibility
-**TextGrad** 
-- Make sure the Benchmark_validation_testset.json is in the ClinIQLink2025 Folder
-- Make Sure gpt-3.5-turbo-16k is being used as answer engine (default)
-- Make Sure gpt-4o is used as feedback engine (default)
-
-## Team Contributions
-
-| Name              | Contributions                                  |
-|-------------------|------------------------------------------------|
-| Kevin Pfister     | TextGrad implementation, searching and preparing Testset.  |
-| Team Member 2     | Model training, hyperparameter tuning.         |
-| Team Member 3     | Evaluation, visualization, documentation.      |
-| Team Member 4     | Project management, writing IMRAD paper.       |
-
-## Results & Evaluation
-**TextGrad Results**
-**Baseline**
-- True/False:
-  - Accuracy: 0.64  
-  - Precision: 1  
-  - Recall: 0.64  
-  - F1 Score: 0.78  
-- Multiple Choice:
-  - Accuracy: 0.54  
-  - Precision: 0.54  
-  - Recall: 1  
-  - F1 Score: 0.70  
-- List:
-  - Accuracy: 0.62  
-  - Precision: 0.86  
-  - Recall: 0.69  
-  - F1 Score: 0.77  
-
-**TextGrad without RAG**
-- True/False:
-  - Accuracy: 0.60  
-  - Precision: 1  
-  - Recall: 0.60  
-  - F1 Score: 0.75  
-- Multiple Choice:
-  - Accuracy: 0.58  
-  - Precision: 0.58  
-  - Recall: 1  
-  - F1 Score: 0.73  
-- List:
-  - Accuracy: 0.68  
-  - Precision: 0.87  
-  - Recall: 0.75  
-  - F1 Score: 0.81  
-
-**TextGrad with RAG**
-- True/False:
-  - Accuracy: 0.44  
-  - Precision: 1  
-  - Recall: 0.44  
-  - F1 Score: 0.61  
-- Multiple Choice:
-  - Accuracy: 0.40  
-  - Precision: 0.40  
-  - Recall: 1  
-  - F1 Score: 0.57  
-- List:
-  - Accuracy: 0.54  
-  - Precision: 0.84  
-  - Recall: 0.61  
-  - F1 Score: 0.70  
+> [!IMPORTANT]  
+> Git-lfs is required to download and load corpora for the first time.
+> Java is also requried to download for the indexing
 
 
-![Baseline_vs_Textgrad](https://github.com/user-attachments/assets/ee19d075-d2fb-461b-83eb-0c8f7775449a)
+### 4. Configure Environment Variables
+```bash
+# Copy environment template
+cp .env.example .env
 
+# Edit .env file with your API keys
+nano .env
+```
 
-![Textgrad_with_rag](https://github.com/user-attachments/assets/c180ea47-76cb-493d-89de-5f932a10c53c)
-- **References:**
-  - [TextGrad: Automatic "Differentiation" via Text](https://arxiv.org/pdf/2406.07496) (Mert Yuksekgonul et al., Findings 2024)
-  - [ClinIQLink-2025 website](https://brandonio-c.github.io/ClinIQLink-2025/).
-  - [A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models](https://arxiv.org/abs/2401.01313) (S. M Towhidul Islam Tonmoy et al., Findings 2024) 
+Required environment variables:
+```bash
+# OpenAI (optional)
+OPENAI_API_KEY=your_openai_api_key_here
 
-![ClinIQLinkStep3 drawio](https://github.com/user-attachments/assets/8da3a491-05d6-45b2-be49-04868d7ee557)
+# Google Gemini/Gemma (optional)
+GOOGLE_API_KEY=your_google_api_key_here
+
+# HuggingFace for local models (optional)
+HUGGINGFACE_TOKEN=your_huggingface_token_here
+```
+
+### 5. Verify Installation
+```bash
+# Move to src folder
+cd src/ 
+
+# Test retrieval system
+python -c "from medical_retrieval import create_retrieval_system; print('✅ Retrieval system OK')"
+
+# Test RAG system
+python -c "from medical_rag import create_medical_rag; print('✅ RAG system OK')"
+
+# Validate environment
+python -c "from medical_rag import validate_environment; print(validate_environment())"
+```
 
 ---
 
-## Submission and Evaluation
+## Quick Start
 
-Participants are required to:
-- **Submit a Short Paper:** Explain the novel method or approach used to reduce hallucinations and improve accuracy.
-- **Upload the Model:** Submit your solution via CodaBench for evaluation.
-- **Evaluation Process:**  
-  - Solutions will be tested on a hidden test set provided by the challenge organizers.
-  - The evaluation will focus solely on the factual accuracy of the retrieved medical knowledge.
-  - A leaderboard will rank submissions based on metrics such as precision, recall, F1 score, and semantic accuracy.
-  
-For detailed challenge guidelines, refer to the [ClinIQLink-2025 website](https://brandonio-c.github.io/ClinIQLink-2025/).
+### Basic Usage
+
+```python
+from medical_rag import create_medical_rag
+
+# Create a medical RAG system
+rag = create_medical_rag(
+    llm_provider="openai",          # or "gemini", "gemma3", "local"
+    use_rag=True,                   # Enable retrieval
+    retriever_name="MedicalHybrid", # BM25 + MedCPT
+    corpus_name="MedCorp"           # All medical corpora
+)
+
+# Ask a medical question
+question = {
+    "question": "What are the first-line treatments for hypertension?",
+    "type": "multiple_choice",
+    "options": {
+        "A": "ACE inhibitors",
+        "B": "Thiazide diuretics",
+        "C": "Beta blockers",
+        "D": "Calcium channel blockers"
+    }
+}
+
+# Get answer with supporting documents
+answer, documents, scores = rag.answer(question)
+print(f"Answer: {answer}")
+print(f"Supporting documents: {len(documents)}")
+```
 
 ---
 
-## Installation and Setup
+## Benchmarking & Evaluation
 
+### Running Benchmarks
 
+The main evaluation script `Main.py` provides comprehensive benchmarking:
+
+```bash
+# Full benchmark (150 questions)
+python Main.py --benchmark_file ./Benchmark_validation_enhanced_testset.json
+
+# Quick test (30 questions)
+python Main.py --benchmark_file ./Benchmark_validation_testset.json
+
+# Custom configuration
+python Main.py --limit 10 --output_dir ./my_results
+```
+
+### Benchmark Configuration
+
+Edit the configuration variables in `Main.py`:
+```python
+retriever = "SPLADE"      # BM25, SPLADE, UniCOIL, MedCPT, MedicalHybrid
+corpus = "MedCorp"        # Textbooks, PubMed, StatPearls, MedCorp, All
+model = "Gemma3"          # Gemma3, OpenAI, Gemini, Local
+documents = 3             # Number of documents to retrieve
+```
+
+### Evaluation Metrics
+
+The system computes comprehensive metrics:
+- **Accuracy**: Exact match accuracy
+- **Precision**: Precision of retrieved information
+- **Recall**: Coverage of relevant information
+- **F1-Score**: Harmonic mean of precision and recall
+
+Results are saved in structured format:
+```
+logs/rag_results_SPLADE_150QA_3_MedCorp_Gemma3_20241201_143022/
+├── config.json              # Experiment configuration
+├── benchmark_scores.json    # Overall metrics
+├── raw_results.json        # Detailed results
+└── questions/              # Per-question artifacts
+    ├── question_1/
+    │   ├── question.json
+    │   ├── prompt.txt
+    │   ├── response.txt
+    │   ├── snippets.json
+    │   └── parsed_answer.json
+    └── ...
+```
 
 ---
 
-## Usage
+## Results & Performance
+
+### Baseline Performance
+
+| Model | Question | F1-Score |
+|-------|----------|----------|
+| Gemma 3 12B | 30 | 0.77 |
+| Gemma 3 12B | 150 | 0.79 |
+| Gemini | 30 | 0.91 |
+| Gemini | 150 | 0.84 |
+| Gemini | 30 | 0.77 |
+| Gemini | 150 | 0.77 |
 
 
+
+### Improvement made on Multiple Choice QA
+
+| Retriever       | # Documents | MC vs Baseline | Model   |
+| :-------------- | :---------: | :------------: | :------ |
+| BM25            |      5      |    +  9.38 %   | Gemma-3 |
+| ExpansionHybrid |      3      |    +  3.89 %   | Gemma-3 |
+| SPLADE          |      5      |    +  3.89 %   | Gemma-3 |
+| ExpansionHybrid |      5      |    +  3.72 %   | OpenAI  |
+| BM25            |      15     |    +  3.72 %   | OpenAI  |
+| ExpansionHybrid |      15     |    +  1.97 %   | Gemma-3 |
+| BM25            |      15     |    +  1.97 %   | Gemma-3 |
+| OptimalHybrid   |      15     |    +  1.88 %   | OpenAI  |
+
+### Improvement made on True/False QA
+| Retriever       | # Documents | TF vs Baseline | Model  |
+| :-------------- | :---------: | :------------: | :----- |
+| ExpansionHybrid |      5      |    + 13.39 %   | Gemini |
+| MedicalHybrid   |      15     |    +  9.14 %   | Gemini |
+| MedicalHybrid   |      5      |    +  9.14 %   | Gemini |
+| ExpansionHybrid |      15     |    +  6.94 %   | Gemini |
+| ExpansionHybrid |      3      |    +  6.94 %   | Gemini |
+| OptimalHybrid   |      5      |    +  6.94 %   | Gemini |
+
+### Improvement made on List QA
+- No improvement have been made in my experiment with the list QA.
+
+> [!NOTE]  
+> All results are based on medical Q&A benchmarks with 150 questions across multiple medical domains. Performance may vary based on specific use cases and configurations.
 
 ---
 
-## Future Directions
+## Contribution Log
 
+Everything in this repository was created by me, Zakaria Omarar. Kevin Pfister used and later forked both the RAG and the entire project, using the custom entry point I provided — rag_answer_textgrad — to implement the TextGrad component.
+---
 
+## References
+
+### Academic Papers
+- Karpukhin et al. (2020). *Dense Passage Retrieval for Open-Domain Question Answering*. EMNLP.
+- Formal et al. (2021). *SPLADE: Sparse Lexical and Expansion Model for First Stage Ranking*. SIGIR.
+- Lin et al. (2021). *Sparse, Dense, and Attentional Representations for Text Retrieval*. TACL.
+- Jin et al. (2023). *MedCPT: Contrastive Pre-trained Transformers with Large-scale PubMed Search Logs*. arXiv.
+- [A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models](https://arxiv.org/abs/2401.01313) (S. M Towhidul Islam Tonmoy et al., Findings 2024)
+
+### Medical Data Sources
+- [PubMed](https://pubmed.ncbi.nlm.nih.gov/) - Biomedical literature database
+- [StatPearls](https://www.ncbi.nlm.nih.gov/books/NBK430685/) - Medical reference textbook
+- [Medical Wikipedia](https://en.wikipedia.org/wiki/Portal:Medicine) - Medical articles
+
+### Technical Libraries
+- [PySerini](https://github.com/castorini/pyserini) - Information retrieval toolkit
+- [Transformers](https://huggingface.co/transformers/) - Neural language models
+- [llama-cpp-python](https://github.com/abetlen/llama-cpp-python) - Local model inference
+- [OpenAI API](https://openai.com/api/) - GPT model access
+- [Google Generative AI](https://ai.google.dev/) - Gemini model access
+
+### Related Projects And Challenge
+- [ClinIQLink-2025 website](https://brandonio-c.github.io/ClinIQLink-2025/).
+- [Benchmarking Retrieval-Augmented Generation for Medicine](https://aclanthology.org/2024.findings-acl.372/) (Xiong et al., Findings 2024)
+ 

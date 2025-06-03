@@ -1,0 +1,20 @@
+# Core ML/AI libraries
+torch
+numpy
+transformers
+huggingface-hub
+
+# Retrieval and search
+pyserini
+
+# LLM API clients  
+openai
+google-generativeai
+
+# Local LLM support
+llama-cpp-python
+
+# Utilities
+tqdm
+python-dotenv
+python-liquid
